@@ -15,7 +15,7 @@ def setup():
 def develop():
     """Development mode"""
     subprocess.run("python3 setup.py develop --user", shell=True, check=True)
-    subprocess.run("cp code-scribe/code-scribe $HOME/.local/bin", shell=True, check=True)
+    subprocess.run("cp code_scribe/code-scribe $HOME/.local/bin", shell=True, check=True)
 
 
 @setup.command(name="install")
@@ -24,7 +24,7 @@ def install():
     subprocess.run("python3 setup.py develop --user", shell=True, check=True)
     subprocess.run("python3 setup.py build", shell=True, check=True)
     subprocess.run("python3 setup.py install --user", shell=True, check=True)
-    subprocess.run("cp code-scribe/code-scribe $HOME/.local/bin", shell=True, check=True)
+    subprocess.run("cp code_scribe/code-scribe $HOME/.local/bin", shell=True, check=True)
 
 
 @setup.command(name="publish")

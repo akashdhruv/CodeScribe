@@ -8,7 +8,7 @@ from setuptools import setup, find_packages
 with open("README.rst", mode="r") as readme:
     long_description = readme.read()
 
-with open("code-scribe/__meta__.py", mode="r") as source:
+with open("code_scribe/__meta__.py", mode="r") as source:
     content = source.read().strip()
     metadata = {
         key: re.search(key + r'\s*=\s*[\'"]([^\'"]*)[\'"]', content).group(1)
@@ -39,7 +39,7 @@ setup(
     #        "resources/Dockerfile.user",
     #    ]
     #},
-    scripts=["code-scribe/code-scribe"],
+    scripts=["code_scribe/code-scribe"],
     include_package_data=True,
     long_description=long_description,
     classifiers=[

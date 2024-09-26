@@ -1,0 +1,7 @@
+__pycache__
+*.egg-info
+build
+*.rst
+.sphinx/source/media/*
+!.sphinx/source/index.rst
+!./README.rst

@@ -22,7 +22,11 @@ with open("code_scribe/__meta__.py", mode="r") as source:
     }
 
 # core dependencies - click, docker, singularity
-DEPENDENCIES = ["click", "toml"]
+DEPENDENCIES = []
+
+with open("requirements.txt", mode="r", encoding="ascii") as core_reqs:
+    DEPENDENCIES = core_reqs.read()
+
 
 setup(
     name=metadata["__pkgname__"],

@@ -3,4 +3,4 @@
 import code_scribe
 
 if __name__ == "__main__":
-    pass
+    code_scribe.cli.code_scribe()

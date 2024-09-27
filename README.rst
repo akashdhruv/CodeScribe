@@ -137,14 +137,14 @@ Following is a breif overview of different commands:
    saved with a ``.scribe`` extension and include prompts tailored to
    each statement in the original source code.
 
-#. ``code-scribe neural-translate <filelist> -m <model-name-or-path> -p
-   <prompt.toml>``: This command performs neural translation using
-   generative AI. you can either download a model locally from
-   huggingface and provide it as an option to `-m` or you can simply set
-   `-m openai` to use OpenAI API to perform code translation. Note that
-   `-m openai` requires the environemnt variable `OPENAI_API_KEY` to be
-   set. The `<prompt.toml>` is a chat template that guides AI to perform
-   code translation using the source and draft `.scribe` files.
+#. ``code-scribe neural-translate <filelist> -m <model-name-or-path> -p <prompt.toml>``: 
+   This command performs neural translation using
+   generative AI. You can either download a model locally from
+   huggingface and provide it as an option to ``-m`` or you can simply set
+   ``-m openai`` to use OpenAI API to perform code translation. Note that
+   ``-m openai`` requires the environemnt variable ``OPENAI_API_KEY`` to be
+   set. The ``<prompt.toml>`` is a chat template that guides AI to perform
+   code translation using the source and draft ``.scribe`` files.
 
    .. code:: toml
 

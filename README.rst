@@ -1,26 +1,40 @@
 .. |icon| image:: ./media/icon.svg
    :width: 35
 
-###################
+####################
  |icon| Code-Scribe
-###################
+####################
 
 |Code style: black|
 
+**********
+ Overview
+**********
+
+Code-Scribe is a tool designed to facilitate the incremental translation
+of Fortran codebases into C++ using generative AI. It automates the
+process of generating corresponding C++ source files and creating
+Fortran-C interfaces, simplifying the integration of Fortran and C++.
+The tool also allows users to interface with large language models
+(LLMs) through the Transformers API, enabling custom prompts tailored to
+the specific needs of the source code.
+
 **************
-Overview
+ Key Features
 **************
 
-Code-Scribe is a tool designed to facilitate the incremental translation of Fortran codebases into C++ using generative AI. It automates the process of generating corresponding C++ source files and creating Fortran-C interfaces, simplifying the integration of Fortran and C++. The tool also allows users to interface with large language models (LLMs) through the Transformers API, enabling custom prompts tailored to the specific needs of the source code.
+-  Incremental Translation: Translate Fortran codebase into C++
+   incrementally, creating Fortran-C layers for seamless
+   interoperability.
 
-**************
-Key Features
-**************
+-  Custom Prompts: Automatically generate prompts for generative AI to
+   assist with the conversion process.
 
-- Incremental Translation: Translate Fortran codebase into C++ incrementally, creating Fortran-C layers for seamless interoperability.
-- Custom Prompts: Automatically generate prompts for generative AI to assist with the conversion process.
-- Language Model Integration: Leverage LLMs through the Transformers API to refine the translation and improve accuracy.
-- Fortran-C Interfaces: Generate the necessary interface layers between Fortran and C++ for easy function and subroutine conversion.
+-  Language Model Integration: Leverage LLMs through the Transformers
+   API to refine the translation and improve accuracy.
+
+-  Fortran-C Interfaces: Generate the necessary interface layers between
+   Fortran and C++ for easy function and subroutine conversion.
 
 **************
  Installation
@@ -40,15 +54,25 @@ source code and is an effective method for debugging. Note that the
 
    pip install click
 
-The ``code-scribe`` script is installed in ``$HOME/.local/bin`` directory
-and therfore the environment variable, ``PATH``, should be updated to
-include this location for command line use.
+The ``code-scribe`` script is installed in ``$HOME/.local/bin``
+directory and therfore the environment variable, ``PATH``, should be
+updated to include this location for command line use.
 
 *******************
  Statement of Need
 *******************
 
-In scientific computing, translating legacy Fortran codebases to C++ is necessary to leverage modern libraries and ensure performance portability across various heterogeneous high-performance computing (HPC) platforms. However, bulk translation of entire codebases often results in broken functionality and unmanageable complexity. Incremental translation, which involves creating Fortran-C layers, testing, and iteratively converting the code, is a more practical approach. Code-Scribe supports this process by automating the creation of these interfaces and assisting with generative AI to improve efficiency and accuracy, ensuring that performance and functionality are maintained throughout the conversion.
+In scientific computing, translating legacy Fortran codebases to C++ is
+necessary to leverage modern libraries and ensure performance
+portability across various heterogeneous high-performance computing
+(HPC) platforms. However, bulk translation of entire codebases often
+results in broken functionality and unmanageable complexity. Incremental
+translation, which involves creating Fortran-C layers, testing, and
+iteratively converting the code, is a more practical approach.
+Code-Scribe supports this process by automating the creation of these
+interfaces and assisting with generative AI to improve efficiency and
+accuracy, ensuring that performance and functionality are maintained
+throughout the conversion.
 
 .. |Code style: black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/psf/black

@@ -23,22 +23,38 @@ needs of the source code.
  Key Features
 **************
 
--  Incremental Translation: Translate Fortran codebase into C++
+*  Incremental Translation: Translate Fortran codebase into C++
    incrementally, creating Fortran-C layers for seamless
    interoperability.
 
    |fig1|
 
--  Custom Prompts: Automatically generate prompts for generative AI to
+*  Custom Prompts: Automatically generate prompts for generative AI to
    assist with the conversion process.
 
--  Language Model Integration: Leverage LLMs through the Transformers
+*  Language Model Integration: Leverage LLMs through the Transformers
    API to refine the translation and improve accuracy.
 
    |fig2|
 
--  Fortran-C Interfaces: Generate the necessary interface layers between
+*  Fortran-C Interfaces: Generate the necessary interface layers between
    Fortran and C++ for easy function and subroutine conversion.
+
+*******************
+ Statement of Need
+*******************
+
+In scientific computing, translating legacy Fortran codebases to C++ is
+necessary to leverage modern libraries and ensure performance
+portability across various heterogeneous high-performance computing
+(HPC) platforms. However, bulk translation of entire codebases often
+results in broken functionality and unmanageable complexity. Incremental
+translation, which involves creating Fortran-C layers, testing, and
+iteratively converting the code, is a more practical approach.
+Code-Scribe supports this process by automating the creation of these
+interfaces and assisting with generative AI to improve efficiency and
+accuracy, ensuring that performance and functionality are maintained
+throughout the conversion.
 
 **************
  Installation
@@ -62,27 +78,69 @@ The ``code-scribe`` script is installed in ``$HOME/.local/bin``
 directory and therfore the environment variable, ``PATH``, should be
 updated to include this location for command line use.
 
-*******************
- Statement of Need
-*******************
+**************
+Usage
+**************
 
-In scientific computing, translating legacy Fortran codebases to C++ is
-necessary to leverage modern libraries and ensure performance
-portability across various heterogeneous high-performance computing
-(HPC) platforms. However, bulk translation of entire codebases often
-results in broken functionality and unmanageable complexity. Incremental
-translation, which involves creating Fortran-C layers, testing, and
-iteratively converting the code, is a more practical approach.
-Code-Scribe supports this process by automating the creation of these
-interfaces and assisting with generative AI to improve efficiency and
-accuracy, ensuring that performance and functionality are maintained
-throughout the conversion.
+You can use the `--help` options with every command to get better
+understanding of their functionality
+
+.. code-block::
+
+   ▶ code-scribe --help
+   Usage: code-scribe [OPTIONS] COMMAND [ARGS]...
+
+     Software development tool for converting code from Fortran to C++
+
+   Options:
+     -v, --version
+     --help         Show this message and exit.
+
+   Commands:
+     draft             Perform a draft conversion from Fortran to C++ 
+     index             Index files along a project directory tree 
+     neural-translate  Perform a generative AI conversion 
+     save-prompts      Create and save customized prompts for each file 
+
+
+Following is a breif overview of different commands:
+
+1.  ``code-scribe index`` - Parses the project directory tree and creates a ``scribe.yaml`` file at each node along the directory tree. These YAML files contain metadata about functions, modules, and subroutines in the source files. This information is used during the conversion process to guide LLM models in understanding the structure of the code.
+
+   .. code:: yaml
+
+      # Example contents of scribe.yaml
+      directory: src
+      files:
+        module1.f90
+          modules:
+            - module1
+          subroutines:
+            - subroutine1
+            - subroutine2
+          functions:
+            - function1
+
+        module2.f90
+          modules: []
+          subroutines:
+            - subroutineA
+          functions:
+            - functionB
+
+2.  ``code-scribe draft <filelist>``: Takes a list of files and generates draft versions of the corresponding C++ files. The draft files are saved with a ``.scribe`` extension and include prompts tailored to each statement in the original source code.
+
+3.  ``code-scribe neural-translate <filelist> -m <model-name-or-path> -p <prompt.toml>``: This command performs neural translation using generative AI. you can either download a model locally from huggingface and provide it as an option to `-m` or you can simply set `-m openai` to use OpenAI API to perform code translation. Note that `-m openai` requires the environemnt variable `OPENAI_API_KEY` to be set. The `<prompt.toml>` is a chat template that guides AI to perform code translation using the source and draft `.scribe` files.
+
+4.   ``code-scribe save-prompts <filelist> --seed-prompts=<prompt.toml>``: This command allows generation of file specific prompt files that one can copy/paste to chat interfaces
+like that of ChatGPT to generate the source code. 
+
 
 **********
  Citation
 **********
 
-.. code::
+.. code-block::
 
     @software{akash_dhruv_2024_13845914,
       author       = {Akash Dhruv},

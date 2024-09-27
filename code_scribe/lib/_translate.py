@@ -56,6 +56,7 @@ def save_prompt(mapping, prompt):
                     pdest.write(f'role = "{instance["role"]}"\n')
                     pdest.write(f'content = """\n{instance["content"]}"""\n\n')
 
+            print(f"Generated prompt file for LLM consumption {ptoml}")
             chat_template[-1]["content"] = saved_prompt
 
 

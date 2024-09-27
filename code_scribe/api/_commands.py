@@ -20,11 +20,18 @@ def draft(fortran_file, root_dir):
     lib.annotate_fortran_file(fortran_file, item_index_list)
     return f'Generated draft file for LLM consumption {os.path.splitext(fortran_file)[0] + ".scribe"}'
 
-def neural_translate(filelist, model, prompt, save_prompt):
+
+def save_prompts(filelist, prompt):
+    """
+    API command for creating a draft files
+    """
     mapping = lib.create_src_mapping(filelist)
+    lib.save_prompt(mapping, prompt)
 
-    if model:
-        lib.translate(mapping, model, prompt)
 
-    if save_prompt:
-        lib.save_prompt(mapping, prompt)
+def neural_translate(filelist, model, prompt):
+    """
+    API command for creating a draft files
+    """
+    mapping = lib.create_src_mapping(filelist)
+    lib.translate(mapping, model, prompt)

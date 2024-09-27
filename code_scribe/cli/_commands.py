@@ -47,12 +47,28 @@ def draft(fortran_files, root_dir):
         click.echo(message)
 
 
+@code_scribe.command(name="save-prompts")
+@click.argument("fortran-files", nargs=-1)
+@click.option("--seed-prompt", "-p", required=True)
+def save_prompts(fortran_files, seed_prompt):
+    """
+    \b
+    Create and save customized prompts for each file
+    \b
+
+    \b
+    This command creates customized prompts for
+    each file using a seed prompt
+    \b
+    """
+    api.save_prompts(fortran_files, seed_prompt)
+
+
 @code_scribe.command(name="neural-translate")
 @click.argument("fortran-files", nargs=-1)
-@click.option("--model", "-m", default=None)
+@click.option("--model", "-m", required=True)
 @click.option("--prompt", "-p", required=True)
-@click.option("--save-prompt", is_flag=True)
-def neural_translate(fortran_files, model, prompt, save_prompt):
+def neural_translate(fortran_files, model, prompt):
     """
     \b
     Perform a generative AI conversion
@@ -64,4 +80,4 @@ def neural_translate(fortran_files, model, prompt, save_prompt):
     interface
     \b
     """
-    api.neural_translate(fortran_files, model, prompt, save_prompt)
+    api.neural_translate(fortran_files, model, prompt)

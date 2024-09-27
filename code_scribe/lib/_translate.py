@@ -1,11 +1,11 @@
 # Prompt engineering for building diffusion stencils for constant and variable coefficient equation
 
 # Import libraries
-import os, sys, toml, json
+import os, sys, toml, json, importlib
 
 from typing import Optional
-import transformers, torch
 from alive_progress import alive_bar
+
 
 def save_prompt(mapping, prompt):
 
@@ -21,7 +21,7 @@ def save_prompt(mapping, prompt):
 
             source_code = []
             draft_code = []
-                
+
             with open(fsource, "r") as sfile:
 
                 is_comment = False
@@ -29,7 +29,7 @@ def save_prompt(mapping, prompt):
                     is_comment = False
 
                     if line.strip().lower().startswith(("c", "!!", "!")) and (
-                       not line.strip().lower().startswith(("complex"))
+                        not line.strip().lower().startswith(("complex"))
                     ):
                         is_comment = True
 
@@ -42,11 +42,15 @@ def save_prompt(mapping, prompt):
                         draft_code.append(line)
 
             saved_prompt = chat_template[-1]["content"]
-            chat_template[-1]["content"] += "\n" + "<source>\n" + "".join(source_code) + "</source>"
+            chat_template[-1]["content"] += (
+                "\n" + "<source>\n" + "".join(source_code) + "</source>"
+            )
             if draft_code:
-                chat_template[-1]["content"] += "\n\n" + "<draft>\n" + "".join(draft_code) + "</draft>"
+                chat_template[-1]["content"] += (
+                    "\n\n" + "<draft>\n" + "".join(draft_code) + "</draft>"
+                )
 
-            with open(ptoml,"w") as pdest:
+            with open(ptoml, "w") as pdest:
                 for instance in chat_template:
                     pdest.write("[[chat]]\n")
                     pdest.write(f'role = "{instance["role"]}"\n')
@@ -56,6 +60,9 @@ def save_prompt(mapping, prompt):
 
 
 def translate(mapping, model, prompt):
+
+    transformers = importlib.import_module("transformers")
+    torch = importlib.import_module("torch")
 
     max_new_tokens = 4096
     batch_size = 8
@@ -68,13 +75,15 @@ def translate(mapping, model, prompt):
     pipeline = transformers.pipeline(
         "text-generation",
         model=model,
-        #torch_dtype=torch.float16,
+        # torch_dtype=torch.float16,
         device=-1,
     )
 
     with alive_bar(len(mapping[0]), bar="blocks") as bar:
 
-        for fsource, csource, finterface, draft in zip(mapping[0], mapping[1], mapping[2], mapping[3]):
+        for fsource, csource, finterface, draft in zip(
+            mapping[0], mapping[1], mapping[2], mapping[3]
+        ):
 
             bar.text(fsource)
             bar()
@@ -83,7 +92,7 @@ def translate(mapping, model, prompt):
 
                 source_code = []
                 draft_code = []
-                
+
                 with open(fsource, "r") as sfile:
 
                     is_comment = False
@@ -91,7 +100,7 @@ def translate(mapping, model, prompt):
                         is_comment = False
 
                         if line.strip().lower().startswith(("c", "!!", "!")) and (
-                           not line.strip().lower().startswith(("complex"))
+                            not line.strip().lower().startswith(("complex"))
                         ):
                             is_comment = True
 
@@ -103,15 +112,18 @@ def translate(mapping, model, prompt):
                         for line in dfile.readlines():
                             draft_code.append(line)
 
-
                 with open(csource, "w") as cdest, open(finterface, "w") as fdest:
 
                     saved_prompt = chat_template[-1]["content"]
 
-                    chat_template[-1]["content"] += "\n" + "<source>\n" + "".join(source_code) + "</source>"
+                    chat_template[-1]["content"] += (
+                        "\n" + "<source>\n" + "".join(source_code) + "</source>"
+                    )
 
                     if draft_code:
-                        chat_template[-1]["content"] += "\n\n" + "<draft>\n" + "".join(draft_code) + "</draft>"
+                        chat_template[-1]["content"] += (
+                            "\n\n" + "<draft>\n" + "".join(draft_code) + "</draft>"
+                        )
 
                     results = pipeline(
                         chat_template,

@@ -167,17 +167,26 @@ def extract_fortran_meta(sfile):
 
     return meta_info
 
+
 def annotate_fortran_file(sfile, *args):
     """Annotates a Fortran file, converts types to C++ equivalents, replaces use statements inline with namespaces, and adds headers."""
 
     scribe_filename = os.path.splitext(sfile)[0] + ".scribe"
-    header_includes = set(("#include <cmath>","#include <complex>"))  # Keep track of headers to avoid duplicates
+    header_includes = set(
+        ("#include <cmath>", "#include <complex>")
+    )  # Keep track of headers to avoid duplicates
     content_lines = []  # Store lines of modified content
     prompt_lines = []
 
-    prompt_lines.append('scribe-prompt: Write corressponding extern "C" with _wrapper added to the name. Refer to the template for treating Farray and scalars')
-    prompt_lines.append('scribe-prompt: When variables are used as function. They should be treated as external or statement functions. External functions are available in header files')
-    prompt_lines.append('scribe-prompt: Statement functions should be converted to equivalent lambda functions in C++. Include [&] in capture clause to use variables by reference')
+    prompt_lines.append(
+        'scribe-prompt: Write corressponding extern "C" with _wrapper added to the name. Refer to the template for treating Farray and scalars'
+    )
+    prompt_lines.append(
+        "scribe-prompt: When variables are used as function. They should be treated as external or statement functions. External functions are available in header files"
+    )
+    prompt_lines.append(
+        "scribe-prompt: Statement functions should be converted to equivalent lambda functions in C++. Include [&] in capture clause to use variables by reference"
+    )
 
     with open(sfile, "r") as source:
         source_code = source.readlines()
@@ -197,7 +206,7 @@ def annotate_fortran_file(sfile, *args):
                 module_name = use_match.group(1)
 
                 # Add header include globally but only once
-                header_includes.add(f'#include <{module_name}.hpp>')
+                header_includes.add(f"#include <{module_name}.hpp>")
 
                 # Replace 'use' with 'using namespace' inline
                 content_lines.append(f"using namespace {module_name};\n")
@@ -206,30 +215,60 @@ def annotate_fortran_file(sfile, *args):
             line = re.sub(r"implicit none", "", line)
 
             line = re.sub(r"\binteger\b\s*", "int", line, flags=re.IGNORECASE)
-            line = re.sub(r"\breal\s*(\(\s*kind\s*=\s*\w+\s*\)|\(\s*\w+\s*\)|)?\s*", "double", line, flags=re.IGNORECASE)
-            line = re.sub(r'\bcomplex\s*\(\s*dp\s*\)\s*', 'complex<double> ', line, flags=re.IGNORECASE)
-            line = re.sub(r'\bcomplex\s*\(\s*integer\s*\)\s*', 'complex<int> ', line, flags=re.IGNORECASE)
-            line = re.sub(r'\bcomplex\s*\(\s*logical\s*\)\s*', 'complex<bool> ', line, flags=re.IGNORECASE)
+            line = re.sub(
+                r"\breal\s*(\(\s*kind\s*=\s*\w+\s*\)|\(\s*\w+\s*\)|)?\s*",
+                "double",
+                line,
+                flags=re.IGNORECASE,
+            )
+            line = re.sub(
+                r"\bcomplex\s*\(\s*dp\s*\)\s*",
+                "complex<double> ",
+                line,
+                flags=re.IGNORECASE,
+            )
+            line = re.sub(
+                r"\bcomplex\s*\(\s*integer\s*\)\s*",
+                "complex<int> ",
+                line,
+                flags=re.IGNORECASE,
+            )
+            line = re.sub(
+                r"\bcomplex\s*\(\s*logical\s*\)\s*",
+                "complex<bool> ",
+                line,
+                flags=re.IGNORECASE,
+            )
             line = re.sub(r"(?<!std::)\s*::", "", line)
 
             # Handle complex types in variable declarations, ensuring dimensionality is handled
-            line = re.sub(r'\bcomplex<([^>]+)>\s*(\w+)\s*\((.*?)\)\s*',
-                          r'FArray<std::complex<\1>> \2(\3)', line)
+            line = re.sub(
+                r"\bcomplex<([^>]+)>\s*(\w+)\s*\((.*?)\)\s*",
+                r"FArray<std::complex<\1>> \2(\3)",
+                line,
+            )
 
-            line = re.sub(r'\b(real|double|int|bool|complex<[^>]+>)\s*,?\s*dimension\s*\((.*?)\)\s*(\w+)\s*;',
-                          r'FArray<\1> \3(\2)', line, flags=re.IGNORECASE)
+            line = re.sub(
+                r"\b(real|double|int|bool|complex<[^>]+>)\s*,?\s*dimension\s*\((.*?)\)\s*(\w+)\s*;",
+                r"FArray<\1> \3(\2)",
+                line,
+                flags=re.IGNORECASE,
+            )
 
-            line = re.sub(r'\b(real|double|int|bool|complex<[^>]+>)\s*(\w+)\s*\((.*?)\)\s*;',
-                          r'FArray<\1> \2(\3)', line, flags=re.IGNORECASE)
-
+            line = re.sub(
+                r"\b(real|double|int|bool|complex<[^>]+>)\s*(\w+)\s*\((.*?)\)\s*;",
+                r"FArray<\1> \2(\3)",
+                line,
+                flags=re.IGNORECASE,
+            )
 
             line = re.sub(r"^\s*&", r"\\", line)
-            line = re.sub(r'\s*&\s*$', r' \\', line)
+            line = re.sub(r"\s*&\s*$", r" \\", line)
 
             line = re.sub(r"(\w+)\s*\*\*\s*(\d+)", r"pow(\1,\2)", line)
 
             # Add a semicolon at the end of variable declarations
-            #if re.match(r"^(int|double|complex<[^>]+>)\s", line.strip()):
+            # if re.match(r"^(int|double|complex<[^>]+>)\s", line.strip()):
             #    line = line.strip() + ";"
 
             # Append the modified line to content_lines
@@ -247,6 +286,7 @@ def annotate_fortran_file(sfile, *args):
 
         # Then, write the rest of the modified content
         scribe_file.writelines(content_lines)
+
 
 def create_src_mapping(filelist):
     """
@@ -269,4 +309,4 @@ def create_src_mapping(filelist):
         csdraft.append(os.path.splitext(sfile)[0] + ".scribe")
         ptoml.append(os.path.splitext(sfile)[0] + ".toml")
 
-    return fsource,csource,finterface,csdraft,ptoml
+    return fsource, csource, finterface, csdraft, ptoml

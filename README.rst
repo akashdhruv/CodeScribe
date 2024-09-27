@@ -27,11 +27,17 @@ the specific needs of the source code.
    incrementally, creating Fortran-C layers for seamless
    interoperability.
 
+   |fig1|
+
+
 -  Custom Prompts: Automatically generate prompts for generative AI to
    assist with the conversion process.
 
 -  Language Model Integration: Leverage LLMs through the Transformers
    API to refine the translation and improve accuracy.
+
+   |fig2|
+
 
 -  Fortran-C Interfaces: Generate the necessary interface layers between
    Fortran and C++ for easy function and subroutine conversion.
@@ -76,3 +82,9 @@ throughout the conversion.
 
 .. |Code style: black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/psf/black
+
+.. |fig1| image:: ./media/workflow.png
+    :width: 600px
+    
+.. |fig2| image:: ./media/engine.png
+    :width: 600px

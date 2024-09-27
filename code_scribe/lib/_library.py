@@ -172,6 +172,10 @@ def annotate_fortran_file(sfile, *args):
     """Annotates a Fortran file, converts types to C++ equivalents, replaces use statements inline with namespaces, and adds headers."""
 
     scribe_filename = os.path.splitext(sfile)[0] + ".scribe"
+
+    if os.path.isfile(scribe_filename):
+        return f"Skipping! File exists {scribe_filename}..."
+
     header_includes = set(
         ("#include <cmath>", "#include <complex>")
     )  # Keep track of headers to avoid duplicates
@@ -293,6 +297,8 @@ def annotate_fortran_file(sfile, *args):
 
         # Then, write the rest of the modified content
         scribe_file.writelines(content_lines)
+
+    return f"Generated draft file for LLM consumption {scribe_filename}"
 
 
 def create_src_mapping(filelist):

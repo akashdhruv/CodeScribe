@@ -17,8 +17,8 @@ def draft(fortran_file, root_dir):
     API command for creating a draft files
     """
     item_index_list = lib.create_indexes(root_dir)
-    lib.annotate_fortran_file(fortran_file, item_index_list)
-    return f'Generated draft file for LLM consumption {os.path.splitext(fortran_file)[0] + ".scribe"}'
+    message = lib.annotate_fortran_file(fortran_file, item_index_list)
+    return message
 
 
 def save_prompts(filelist, prompt):

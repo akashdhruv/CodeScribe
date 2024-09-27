@@ -12,7 +12,7 @@ class OpenAIModel:
     def __init__(self):
         openai = importlib.import_module("openai")
         self.pipeline = openai.OpenAI()
-        self.outputs = 3
+        self.outputs = 1
         self.max_tokens = 4096
 
     def chat(self, chat_template):

@@ -11,13 +11,13 @@
  Overview
 **********
 
-Code-Scribe is a tool designed to facilitate the incremental translation
+Code-Scribe is a tool designed to facilitate incremental translation
 of Fortran codebases into C++ using generative AI. It automates the
 process of generating corresponding C++ source files and creating
 Fortran-C interfaces, simplifying the integration of Fortran and C++.
 The tool also allows users to interface with large language models
-(LLMs) through the Transformers API, enabling custom prompts tailored to
-the specific needs of the source code.
+(LLMs) through the Transformers API and create custom prompts tailored 
+to the specific needs of the source code.
 
 **************
  Key Features

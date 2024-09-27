@@ -29,7 +29,6 @@ the specific needs of the source code.
 
    |fig1|
 
-
 -  Custom Prompts: Automatically generate prompts for generative AI to
    assist with the conversion process.
 
@@ -37,7 +36,6 @@ the specific needs of the source code.
    API to refine the translation and improve accuracy.
 
    |fig2|
-
 
 -  Fortran-C Interfaces: Generate the necessary interface layers between
    Fortran and C++ for easy function and subroutine conversion.
@@ -80,11 +78,29 @@ interfaces and assisting with generative AI to improve efficiency and
 accuracy, ensuring that performance and functionality are maintained
 throughout the conversion.
 
+**********
+ Citation
+**********
+
+.. code::
+
+    @software{akash_dhruv_2024_13845914,
+      author       = {Akash Dhruv},
+      title        = {{akashdhruv/code-scribe: Initial development
+                   release}},
+      month        = sep,
+      year         = 2024,
+      publisher    = {Zenodo},
+      version      = {0.dev},
+      doi          = {10.5281/zenodo.13845914},
+      url          = {https://doi.org/10.5281/zenodo.13845914}
+   }
+
 .. |Code style: black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/psf/black
 
 .. |fig1| image:: ./media/workflow.png
-    :width: 600px
-    
+   :width: 600px
+
 .. |fig2| image:: ./media/engine.png
-    :width: 600px
+   :width: 600px

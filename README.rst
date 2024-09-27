@@ -172,8 +172,8 @@ Following is a breif overview of different commands:
 
 #. ``code-scribe save-prompts <filelist> --seed-prompts=<prompt.toml>``:
    This command allows generation of file specific prompt files that one
-   can copy/paste to chat interfaces like that of ChatGPT to generate the
-   source code.
+   can copy/paste to chat interfaces like that of ChatGPT to generate
+   the source code.
 
    .. code:: toml
 

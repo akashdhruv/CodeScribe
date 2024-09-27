@@ -23,21 +23,21 @@ needs of the source code.
  Key Features
 **************
 
-*  Incremental Translation: Translate Fortran codebase into C++
+-  Incremental Translation: Translate Fortran codebase into C++
    incrementally, creating Fortran-C layers for seamless
    interoperability.
 
    |fig1|
 
-*  Custom Prompts: Automatically generate prompts for generative AI to
+-  Custom Prompts: Automatically generate prompts for generative AI to
    assist with the conversion process.
 
-*  Language Model Integration: Leverage LLMs through the Transformers
+-  Language Model Integration: Leverage LLMs through the Transformers
    API to refine the translation and improve accuracy.
 
    |fig2|
 
-*  Fortran-C Interfaces: Generate the necessary interface layers between
+-  Fortran-C Interfaces: Generate the necessary interface layers between
    Fortran and C++ for easy function and subroutine conversion.
 
 *******************
@@ -78,14 +78,14 @@ The ``code-scribe`` script is installed in ``$HOME/.local/bin``
 directory and therfore the environment variable, ``PATH``, should be
 updated to include this location for command line use.
 
-**************
-Usage
-**************
+*******
+ Usage
+*******
 
 You can use the `--help` options with every command to get better
 understanding of their functionality
 
-.. code-block::
+.. code::
 
    ▶ code-scribe --help
    Usage: code-scribe [OPTIONS] COMMAND [ARGS]...
@@ -97,15 +97,19 @@ understanding of their functionality
      --help         Show this message and exit.
 
    Commands:
-     draft             Perform a draft conversion from Fortran to C++ 
-     index             Index files along a project directory tree 
-     neural-translate  Perform a generative AI conversion 
-     save-prompts      Create and save customized prompts for each file 
-
+     draft             Perform a draft conversion from Fortran to C++
+     index             Index files along a project directory tree
+     neural-translate  Perform a generative AI conversion
+     save-prompts      Create and save customized prompts for each file
 
 Following is a breif overview of different commands:
 
-1.  ``code-scribe index`` - Parses the project directory tree and creates a ``scribe.yaml`` file at each node along the directory tree. These YAML files contain metadata about functions, modules, and subroutines in the source files. This information is used during the conversion process to guide LLM models in understanding the structure of the code.
+#. ``code-scribe index`` - Parses the project directory tree and creates
+   a ``scribe.yaml`` file at each node along the directory tree. These
+   YAML files contain metadata about functions, modules, and subroutines
+   in the source files. This information is used during the conversion
+   process to guide LLM models in understanding the structure of the
+   code.
 
    .. code:: yaml
 
@@ -128,19 +132,30 @@ Following is a breif overview of different commands:
           functions:
             - functionB
 
-2.  ``code-scribe draft <filelist>``: Takes a list of files and generates draft versions of the corresponding C++ files. The draft files are saved with a ``.scribe`` extension and include prompts tailored to each statement in the original source code.
+#. ``code-scribe draft <filelist>``: Takes a list of files and generates
+   draft versions of the corresponding C++ files. The draft files are
+   saved with a ``.scribe`` extension and include prompts tailored to
+   each statement in the original source code.
 
-3.  ``code-scribe neural-translate <filelist> -m <model-name-or-path> -p <prompt.toml>``: This command performs neural translation using generative AI. you can either download a model locally from huggingface and provide it as an option to `-m` or you can simply set `-m openai` to use OpenAI API to perform code translation. Note that `-m openai` requires the environemnt variable `OPENAI_API_KEY` to be set. The `<prompt.toml>` is a chat template that guides AI to perform code translation using the source and draft `.scribe` files.
+#. ``code-scribe neural-translate <filelist> -m <model-name-or-path> -p
+   <prompt.toml>``: This command performs neural translation using
+   generative AI. you can either download a model locally from
+   huggingface and provide it as an option to `-m` or you can simply set
+   `-m openai` to use OpenAI API to perform code translation. Note that
+   `-m openai` requires the environemnt variable `OPENAI_API_KEY` to be
+   set. The `<prompt.toml>` is a chat template that guides AI to perform
+   code translation using the source and draft `.scribe` files.
 
-4.   ``code-scribe save-prompts <filelist> --seed-prompts=<prompt.toml>``: This command allows generation of file specific prompt files that one can copy/paste to chat interfaces
-like that of ChatGPT to generate the source code. 
-
+#. ``code-scribe save-prompts <filelist> --seed-prompts=<prompt.toml>``:
+This command allows generation of file specific prompt files that one
+can copy/paste to chat interfaces like that of ChatGPT to generate the
+source code.
 
 **********
  Citation
 **********
 
-.. code-block::
+.. code::
 
     @software{akash_dhruv_2024_13845914,
       author       = {Akash Dhruv},

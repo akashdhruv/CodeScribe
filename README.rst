@@ -146,10 +146,68 @@ Following is a breif overview of different commands:
    set. The `<prompt.toml>` is a chat template that guides AI to perform
    code translation using the source and draft `.scribe` files.
 
+   .. code:: toml
+
+      # Example contents of prompt.toml
+
+      [[chat]]
+      role = "user"
+      content = "‹Rules and syntax-related instructions for code conversion>"
+
+      [[chat]]
+      role = "assistant"
+      content = "I am ready. Please give me a test problem."
+
+      [[chat]]
+      role = "user"
+      content = "<Template of contents in a source file>"
+
+      [[chat]]
+      role = "assistant"
+      content = "‹Desired contents of the converted file. Syntactically correct code>"
+
+      [[chat]]
+      role = "user"
+      content = "<Append code from a source file>"
+
 #. ``code-scribe save-prompts <filelist> --seed-prompts=<prompt.toml>``:
-This command allows generation of file specific prompt files that one
-can copy/paste to chat interfaces like that of ChatGPT to generate the
-source code.
+   This command allows generation of file specific prompt files that one
+   can copy/paste to chat interfaces like that of ChatGPT to generate the
+   source code.
+
+   .. code:: toml
+
+      # Example contents of file specific prompt, seeded from prompt.toml
+
+      [[chat]]
+      role = "user"
+      content = "‹Rules and syntax-related instructions for code conversion>"
+
+      [[chat]]
+      role = "assistant"
+      content = "I am ready. Please give me a test problem."
+
+      [[chat]]
+      role = "user"
+      content = "<Template of contents in a source file>"
+
+      [[chat]]
+      role = "assistant"
+      content = "‹Desired contents of the converted file. Syntactically correct code>"
+
+      [[chat]]
+      role = "user"
+      content = """
+      <Ask llm to convert the following code>:
+
+      <source>
+      # Contents of Fortran source file.
+      </source>
+
+      <draft>
+      # Contents of draft .scribe file
+      </draft>
+      """
 
 **********
  Citation

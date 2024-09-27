@@ -26,7 +26,7 @@ def save_prompts(filelist, prompt):
     API command for creating a draft files
     """
     mapping = lib.create_src_mapping(filelist)
-    lib.save_prompt(mapping, prompt)
+    lib.prompt_translate(mapping, prompt, model=None, save_prompts=True)
 
 
 def neural_translate(filelist, model, prompt):
@@ -34,4 +34,4 @@ def neural_translate(filelist, model, prompt):
     API command for creating a draft files
     """
     mapping = lib.create_src_mapping(filelist)
-    lib.translate(mapping, model, prompt)
+    lib.prompt_translate(mapping, prompt, model=model, save_prompts=False)

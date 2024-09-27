@@ -179,13 +179,16 @@ def annotate_fortran_file(sfile, *args):
     prompt_lines = []
 
     prompt_lines.append(
-        'scribe-prompt: Write corressponding extern "C" with _wrapper added to the name. Refer to the template for treating Farray and scalars'
+        'scribe-prompt: Write corressponding extern "C" with _wrapper added to the name. '
+        + "Refer to the template for treating Farray and scalars"
     )
     prompt_lines.append(
-        "scribe-prompt: When variables are used as function. They should be treated as external or statement functions. External functions are available in header files"
+        "scribe-prompt: When variables are used as function. They should be treated as external or statement functions. "
+        + "External functions are available in header files"
     )
     prompt_lines.append(
-        "scribe-prompt: Statement functions should be converted to equivalent lambda functions in C++. Include [&] in capture clause to use variables by reference"
+        "scribe-prompt: Statement functions should be converted to equivalent lambda functions in C++. "
+        + "Include [&] in capture clause to use variables by reference"
     )
 
     with open(sfile, "r") as source:
@@ -212,8 +215,10 @@ def annotate_fortran_file(sfile, *args):
                 content_lines.append(f"using namespace {module_name};\n")
                 continue
 
+            # Remove implict none statement
             line = re.sub(r"implicit none", "", line)
 
+            # Handle variable declarations and conversions
             line = re.sub(r"\binteger\b\s*", "int", line, flags=re.IGNORECASE)
             line = re.sub(
                 r"\breal\s*(\(\s*kind\s*=\s*\w+\s*\)|\(\s*\w+\s*\)|)?\s*",
@@ -262,9 +267,11 @@ def annotate_fortran_file(sfile, *args):
                 flags=re.IGNORECASE,
             )
 
+            # Treat line continuation characters. Replace them with equivalent syntax in C++
             line = re.sub(r"^\s*&", r"\\", line)
             line = re.sub(r"\s*&\s*$", r" \\", line)
 
+            # Substitution x**y with pow(x,y)
             line = re.sub(r"(\w+)\s*\*\*\s*(\d+)", r"pow(\1,\2)", line)
 
             # Add a semicolon at the end of variable declarations
@@ -299,14 +306,14 @@ def create_src_mapping(filelist):
     fsource = []
     csource = []
     finterface = []
-    csdraft = []
-    ptoml = []
+    cdraft = []
+    promptfile = []
 
     for sfile in filelist:
         fsource.append(sfile)
         csource.append(os.path.splitext(sfile)[0] + ".cpp")
         finterface.append(os.path.splitext(sfile)[0] + "_fi.f90")
-        csdraft.append(os.path.splitext(sfile)[0] + ".scribe")
-        ptoml.append(os.path.splitext(sfile)[0] + ".toml")
+        cdraft.append(os.path.splitext(sfile)[0] + ".scribe")
+        promptfile.append(os.path.splitext(sfile)[0] + ".toml")
 
-    return fsource, csource, finterface, csdraft, ptoml
+    return fsource, csource, finterface, cdraft, promptfile

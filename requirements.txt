@@ -3,5 +3,6 @@ toml
 pyyaml
 alive-progress==3.1.4
 transformers==4.44.2
-torch==2.1.2
+torch
 huggingface_hub[cli]
+openai

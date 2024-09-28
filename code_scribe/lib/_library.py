@@ -169,7 +169,10 @@ def extract_fortran_meta(sfile):
 
 
 def annotate_fortran_file(sfile, *args):
-    """Annotates a Fortran file, converts types to C++ equivalents, replaces use statements inline with namespaces, and adds headers."""
+    """
+    Annotates a Fortran file, converts types to C++ equivalents,
+    replaces use statements inline with namespaces, and adds headers.
+    """
 
     scribe_filename = os.path.splitext(sfile)[0] + ".scribe"
 
@@ -187,7 +190,8 @@ def annotate_fortran_file(sfile, *args):
         + "Refer to the template for treating Farray and scalars"
     )
     prompt_lines.append(
-        "scribe-prompt: When variables are used as function. They should be treated as external or statement functions. "
+        "scribe-prompt: When variables are used as function. They should be treated as "
+        + "external or statement functions. "
         + "External functions are available in header files"
     )
     prompt_lines.append(

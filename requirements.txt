@@ -2,7 +2,6 @@ click
 toml
 pyyaml
 alive-progress==3.1.4
-transformers==4.44.2
+transformers
 torch
-huggingface_hub[cli]
 openai

@@ -8,6 +8,33 @@ from typing import Optional
 from alive_progress import alive_bar
 
 
+class LlamaModel:
+    def __init__(self, model):
+
+        llama = importlib.import_module("llama")
+
+        self.pipeline = llama.Llama.build(
+            ckpt_dir=model,
+            tokenizer_path=os.path.join(model, "tokenizer.model"),
+            max_seq_len=4096,
+            max_batch_size=8,
+        )
+
+        self.max_gen_len = None
+        self.temperature = 0.5
+        self.top_p = 0.95
+
+    def chat(self, chat_template):
+        results = self.pipeline.chat_completion(
+            [chat_template],
+            max_gen_len=self.max_gen_len,
+            temperature=self.temperature,
+            top_p=self.top_p,
+        )
+        print(results)
+        return results[0]["generation"]["content"]
+
+
 class OpenAIModel:
     def __init__(self):
         openai = importlib.import_module("openai")
@@ -66,7 +93,7 @@ class TFModel:
             pad_token_id=50256,
         )
 
-        return results["generated_text"][-1]["content"]
+        return results[0]["generated_text"][-1]["content"]
 
 
 def prompt_translate(mapping, prompt, model=None, save_prompts=False):

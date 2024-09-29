@@ -197,3 +197,65 @@ def prompt_translate(mapping, seed_prompt, model=None, save_prompts=False):
 
             else:
                 continue
+
+
+def prompt_inspect(filelist, query_prompt, model=None, save_prompts=False):
+    """
+    Perform inspect on a list of files using a query prompt
+    """
+    neural_model = None
+
+    if model:
+        print("Performing neural inspection")
+
+        if os.path.exists(model):
+            neural_model = TFModel(model)
+
+        elif model.lower() == "openai":
+            neural_model = OpenAIModel()
+
+        else:
+            raise ValueError(f"{model} not available")
+
+    if save_prompts:
+        print("Saving prompts to scribe.json")
+
+    chat_template = [{"role": "user", "content": ""}]
+
+    chat_template[-1]["content"] += (
+        "I will give you source code from a set of files that\n"
+        + "belong to a scientific computing codebase. I want you\n"
+        + "to understand the source code and answer a query that\n"
+        + "follows. Source code for each will be separated using\n"
+        + "elements <filename> ... </filename>. Additional\n"
+        + "information related to the project structure may also be\n"
+        + "provided within <index> ... </index>. This information will\n"
+        + "contain an index of subroutines, functions, and modules contained\n"
+        + "in each file. Note that you will find subroutines and functions\n"
+        + "repeat along nodes in the directory tree. This maybe due to a directory-based\n"
+        + "inheritance design implemented by the project. If the index element is not\n"
+        + "present, then you may ignore it. The query prompt will be provided at then end\n"
+        + "using elements <query> ... </query>.\n\n"
+    )
+
+    for fsource in filelist:
+        with open(fsource, "r") as sfile:
+            source_code = []
+
+            for line in sfile.readlines():
+                source_code.append(line)
+
+        if source_code:
+            chat_template[-1]["content"] += (
+                "\n" + f"<{fsource}>\n" + "".join(source_code) + f"</{fsource}>\n"
+            )
+
+    chat_template[-1]["content"] += "\n" + f"<query>\n" + query_prompt + f"\n</query>\n"
+
+    if save_prompts:
+        with open("scribe.json", "w") as pdest:
+            json.dump(chat_template, pdest, indent=4)
+
+    if neural_model:
+        result = neural_model.chat(chat_template)
+        print(result)

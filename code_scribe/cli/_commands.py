@@ -12,13 +12,11 @@ from code_scribe import lib
 
 
 @code_scribe.command(name="index")
-@click.option(
-    "--root-dir", "-r", default=os.getcwd(), help="Root directory of the project"
-)
+@click.option("--root-dir", "-r", required=True, help="Root directory of the project")
 def index(root_dir):
     """
     \b
-    Index files along a project directory tree
+    Index Fortran files along a project directory tree
     \b
 
     \b
@@ -33,10 +31,7 @@ def index(root_dir):
 
 @code_scribe.command(name="draft")
 @click.argument("fortran-files", nargs=-1, required=True)
-@click.option(
-    "--root-dir", "-r", default=os.getcwd(), help="Root directory of the project"
-)
-def draft(fortran_files, root_dir):
+def draft(fortran_files):
     """
     \b
     Perform a draft conversion from Fortran to C++
@@ -48,7 +43,7 @@ def draft(fortran_files, root_dir):
     \b
     """
     for sfile in fortran_files:
-        message = api.draft(sfile, root_dir)
+        message = api.draft(sfile)
         click.echo(message)
 
 
@@ -75,7 +70,7 @@ def draft(fortran_files, root_dir):
 def translate(fortran_files, seed_prompt, model, save_prompts):
     """
     \b
-    Perform a generative AI conversion
+    Perform a generative AI conversion of Fortran files
     \b
 
     \b
@@ -89,3 +84,40 @@ def translate(fortran_files, seed_prompt, model, save_prompts):
             "Please provide either the '--model/-m' or '--save-prompts/-p' option"
         )
     api.translate(fortran_files, seed_prompt, model, save_prompts)
+
+
+@code_scribe.command(name="inspect")
+@click.argument("fortran-files", nargs=-1, required=True)
+@click.option("--query-prompt", "-p", required=True, help="Query prompt")
+@click.option(
+    "--model",
+    "-m",
+    cls=lib.MutuallyExclusiveOption,
+    help="Gen AI model name or path",
+    mutually_exclusive=["save_prompts"],
+)
+@click.option(
+    "--save-prompts",
+    "-s",
+    is_flag=True,
+    cls=lib.MutuallyExclusiveOption,
+    help="Save file specific prompts to json file",
+    mutually_exclusive=["model"],
+)
+def inspect(fortran_files, query_prompt, model, save_prompts):
+    """
+    \b
+    Perform a generative AI inspection on Fortran files
+    \b
+
+    \b
+    This command applies generative AI to inspect a Fortran
+    file and answer a query.
+    \b
+    """
+    if (not model) and (not save_prompts):
+        raise click.UsageError(
+            "Please provide either the '--model/-m' or '--save-prompts/-p' option"
+        )
+
+    api.inspect(fortran_files, query_prompt, model, save_prompts)

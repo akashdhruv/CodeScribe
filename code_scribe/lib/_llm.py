@@ -199,7 +199,7 @@ def prompt_translate(mapping, seed_prompt, model=None, save_prompts=False):
                 continue
 
 
-def prompt_inspect(filelist, query_prompt, model=None, save_prompts=False):
+def prompt_inspect(filelist, query_prompt, file_index, model=None, save_prompts=False):
     """
     Perform inspect on a list of files using a query prompt
     """
@@ -237,6 +237,9 @@ def prompt_inspect(filelist, query_prompt, model=None, save_prompts=False):
         + "present, then you may ignore it. The query prompt will be provided at then end\n"
         + "using elements <query> ... </query>.\n\n"
     )
+
+    chat_template[-1]["content"] += "<index>\n"
+    chat_template[-1]["content"] += "</index>\n\n"
 
     for fsource in filelist:
         with open(fsource, "r") as sfile:

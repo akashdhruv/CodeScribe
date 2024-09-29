@@ -25,7 +25,7 @@ def index(root_dir):
     and functions
     \b
     """
-    message = api.index(root_dir)
+    message = api.index(os.path.abspath(root_dir))
     click.echo(message)
 
 
@@ -42,9 +42,7 @@ def draft(fortran_files):
     prepare a list of files for generative AI use
     \b
     """
-    for sfile in fortran_files:
-        message = api.draft(sfile)
-        click.echo(message)
+    api.draft(fortran_files)
 
 
 @code_scribe.command(name="translate")

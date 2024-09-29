@@ -37,7 +37,7 @@ def extract_fortran_info(filepath):
 def create_scribe_yaml(root_directory):
     """Traverses the directory and creates scribe.yaml files for Fortran files."""
     for dirpath, _, filenames in os.walk(root_directory):
-        scribe_data = {"directory": dirpath, "files": {}}
+        scribe_data = {"root": root_directory, "directory": dirpath, "files": {}}
 
         for filename in filenames:
             if filename.endswith((".f", ".f90", ".F90")):
@@ -60,11 +60,30 @@ def load_scribe_yaml(file_path):
         return yaml.safe_load(yaml_file)
 
 
-def create_indexes(root_directory):
-    """Create a combined index for files, subroutines, functions, and modules from all scribe.yaml files in the directory tree."""
-    item_index_list = {}
+def create_file_indexes():
+    """
+    Create a combined index for files, subroutines, functions,
+    and modules from all scribe.yaml files in the directory tree.
+    """
 
-    # Traverse the directory tree
+    # Start with the current working directory
+    cwd = os.getcwd()
+
+    # Load the scribe.yaml from the current directory
+    yaml_path = os.path.join(cwd, "scribe.yaml")
+    if not os.path.exists(yaml_path):
+        raise FileNotFoundError(f"No scribe.yaml found in {cwd}")
+
+    scribe_data = load_scribe_yaml(yaml_path)
+
+    # Get the root directory from the scribe.yaml file
+    root_directory = scribe_data.get("root", None)
+    if not root_directory:
+        raise ValueError(f"No 'root' entry found in {yaml_path}")
+
+    file_index = {}
+
+    # Traverse the directory tree starting from the root directory
     for dirpath, _, filenames in os.walk(root_directory):
         for filename in filenames:
             if filename == "scribe.yaml":
@@ -82,20 +101,26 @@ def create_indexes(root_directory):
 
                     # Add modules to combined index
                     for mod in modules:
-                        item_index_list[mod] = file_path
+                        file_index[mod] = file_path
                     # Add subroutines to combined index
                     for sub in subroutines:
-                        item_index_list[sub] = file_path
+                        file_index[sub] = file_path
                     # Add functions to combined index
                     for func in functions:
-                        item_index_list[func] = file_path
+                        file_index[func] = file_path
 
-    return item_index_list
+    return file_index
 
 
-def query_item(name, item_index):
+def query_construct(name, file_index):
     """Query the file path of a module, subroutine, or function."""
-    return item_index.get(name, None)
+
+    # Find all matches for the given name
+    matches = [
+        file_path for construct, file_path in file_index.items() if name == construct
+    ]
+
+    return matches if matches else None
 
 
 def extract_fortran_meta(sfile):

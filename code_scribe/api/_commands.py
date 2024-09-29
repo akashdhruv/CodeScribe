@@ -12,13 +12,15 @@ def index(root_dir):
     return f"Project structure saved to scribe.yaml."
 
 
-def draft(fortran_file):
+def draft(fortran_files):
     """
     API command for creating a draft files
     """
-    # item_index_list = lib.create_indexes(root_dir)
-    message = lib.annotate_fortran_file(fortran_file)  # , item_index_list)
-    return message
+    file_index = {}  # lib.create_file_indexes()
+
+    for sfile in fortran_files:
+        message = lib.annotate_fortran_file(sfile, file_index)
+        print(message)
 
 
 def translate(filelist, seed_prompt, model, save_prompts=False):
@@ -33,4 +35,7 @@ def inspect(filelist, query_prompt, model, save_prompts=False):
     """
     API command for creating a draft files
     """
-    lib.prompt_inspect(filelist, query_prompt, model=model, save_prompts=save_prompts)
+    file_index = {}  # lib.create_file_indexes()
+    lib.prompt_inspect(
+        filelist, query_prompt, file_index, model=model, save_prompts=save_prompts
+    )

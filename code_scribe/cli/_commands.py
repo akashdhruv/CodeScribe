@@ -8,10 +8,13 @@ import click
 
 from code_scribe.cli import code_scribe
 from code_scribe import api
+from code_scribe import lib
 
 
 @code_scribe.command(name="index")
-@click.option("--root-dir", "-r", default=os.getcwd())
+@click.option(
+    "--root-dir", "-r", default=os.getcwd(), help="Root directory of the project"
+)
 def index(root_dir):
     """
     \b
@@ -29,8 +32,10 @@ def index(root_dir):
 
 
 @code_scribe.command(name="draft")
-@click.argument("fortran-files", nargs=-1)
-@click.option("--root-dir", "-r", default=os.getcwd())
+@click.argument("fortran-files", nargs=-1, required=True)
+@click.option(
+    "--root-dir", "-r", default=os.getcwd(), help="Root directory of the project"
+)
 def draft(fortran_files, root_dir):
     """
     \b
@@ -47,28 +52,27 @@ def draft(fortran_files, root_dir):
         click.echo(message)
 
 
-@code_scribe.command(name="save-prompts")
-@click.argument("fortran-files", nargs=-1)
-@click.option("--seed-prompt", "-p", required=True)
-def save_prompts(fortran_files, seed_prompt):
-    """
-    \b
-    Create and save customized prompts for each file
-    \b
-
-    \b
-    This command creates customized prompts for
-    each file using a seed prompt
-    \b
-    """
-    api.save_prompts(fortran_files, seed_prompt)
-
-
-@code_scribe.command(name="neural-translate")
-@click.argument("fortran-files", nargs=-1)
-@click.option("--model", "-m", required=True)
-@click.option("--prompt", "-p", required=True)
-def neural_translate(fortran_files, model, prompt):
+@code_scribe.command(name="translate")
+@click.argument("fortran-files", nargs=-1, required=True)
+@click.option(
+    "--seed-prompt", "-p", required=True, help="TOML seed file for chat template"
+)
+@click.option(
+    "--model",
+    "-m",
+    cls=lib.MutuallyExclusiveOption,
+    help="Gen AI model name or path",
+    mutually_exclusive=["save_prompts"],
+)
+@click.option(
+    "--save-prompts",
+    "-s",
+    is_flag=True,
+    cls=lib.MutuallyExclusiveOption,
+    help="Save file specific prompts to json file",
+    mutually_exclusive=["model"],
+)
+def translate(fortran_files, seed_prompt, model, save_prompts):
     """
     \b
     Perform a generative AI conversion
@@ -80,4 +84,8 @@ def neural_translate(fortran_files, model, prompt):
     interface
     \b
     """
-    api.neural_translate(fortran_files, model, prompt)
+    if (not model) and (not save_prompts):
+        raise click.UsageError(
+            "Please provide either the '--model/-m' or '--save-prompts/-p' option"
+        )
+    api.translate(fortran_files, seed_prompt, model, save_prompts)

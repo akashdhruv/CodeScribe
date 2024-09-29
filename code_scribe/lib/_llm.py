@@ -96,7 +96,7 @@ class TFModel:
         return results[0]["generated_text"][-1]["content"]
 
 
-def prompt_translate(mapping, prompt, model=None, save_prompts=False):
+def prompt_translate(mapping, seed_prompt, model=None, save_prompts=False):
     """
     perform translation using prompts and the supplied model.
     """
@@ -118,7 +118,7 @@ def prompt_translate(mapping, prompt, model=None, save_prompts=False):
     if save_prompts:
         print("Saving custom prompts per file")
 
-    chat_template = toml.load(prompt)["chat"]
+    chat_template = toml.load(seed_prompt)["chat"]
 
     with alive_bar(len(mapping[0]), bar="blocks") as bar:
 

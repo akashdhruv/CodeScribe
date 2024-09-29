@@ -21,17 +21,9 @@ def draft(fortran_file, root_dir):
     return message
 
 
-def save_prompts(filelist, prompt):
+def translate(filelist, seed_prompt, model, save_prompts):
     """
     API command for creating a draft files
     """
     mapping = lib.create_src_mapping(filelist)
-    lib.prompt_translate(mapping, prompt, model=None, save_prompts=True)
-
-
-def neural_translate(filelist, model, prompt):
-    """
-    API command for creating a draft files
-    """
-    mapping = lib.create_src_mapping(filelist)
-    lib.prompt_translate(mapping, prompt, model=model, save_prompts=False)
+    lib.prompt_translate(mapping, seed_prompt, model=model, save_prompts=save_prompts)

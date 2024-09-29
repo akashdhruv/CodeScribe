@@ -1,9 +1,9 @@
 .. |icon| image:: ./media/icon.svg
    :width: 35
 
-####################
- |icon| Code-Scribe
-####################
+###################
+ |icon| CodeScribe
+###################
 
 |Code style: black|
 

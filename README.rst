@@ -104,12 +104,12 @@ understanding of their functionality
 
 Following is a breif overview of different commands:
 
-#. ``code-scribe index -r <project_root_dir>`` - Parses the project directory tree and creates
-   a ``scribe.yaml`` file at each node along the directory tree. These
-   YAML files contain metadata about functions, modules, and subroutines
-   in the source files. This information is used during the conversion
-   process to guide LLM models in understanding the structure of the
-   code.
+#. ``code-scribe index -r <project_root_dir>`` - Parses the project
+   directory tree and creates a ``scribe.yaml`` file at each node along
+   the directory tree. These YAML files contain metadata about
+   functions, modules, and subroutines in the source files. This
+   information is used during the conversion process to guide LLM models
+   in understanding the structure of the code.
 
    .. code:: yaml
 
@@ -137,14 +137,15 @@ Following is a breif overview of different commands:
    saved with a ``.scribe`` extension and include prompts tailored to
    each statement in the original source code.
 
-#. ``code-scribe translate <filelist> -m <model_name_or_path> -p <seed_prompt.toml>``: 
+#. ``code-scribe translate <filelist> -m <model_name_or_path> -p <seed_prompt.toml>``:
    This command performs neural translation using
    generative AI. You can either download a model locally from
-   huggingface and provide it as an option to ``-m`` or you can simply set
-   ``-m openai`` to use OpenAI API to perform code translation. Note that
-   ``-m openai`` requires the environemnt variable ``OPENAI_API_KEY`` to be
-   set. The ``<prompt.toml>`` is a chat template that guides AI to perform
-   code translation using the source and draft ``.scribe`` files.
+   huggingface and provide it as an option to ``-m`` or you can simply
+   set ``-m openai`` to use OpenAI API to perform code translation. Note
+   that ``-m openai`` requires the environemnt variable
+   ``OPENAI_API_KEY`` to be set. The ``<prompt.toml>`` is a chat
+   template that guides AI to perform code translation using the source
+   and draft ``.scribe`` files.
 
    .. code:: toml
 
@@ -171,17 +172,19 @@ Following is a breif overview of different commands:
       content = "<Append code from a source file>"
 
 #. ``code-scribe translate <filelist> -p <seed_prompt.toml> --save-prompts``:
-   This command allows generation of file specific json chat template that one
-   can copy/paste to chat interfaces like that of ChatGPT to generate
-   the source code. The json files are created from the seed prompt file
-   and appended with source and draft code.
+   This command allows generation of file specific
+   json chat template that one can copy/paste to chat interfaces like
+   that of ChatGPT to generate the source code. The json files are
+   created from the seed prompt file and appended with source and draft
+   code.
 
-#. ``code-scribe inspect <filelist> -p <query_prompt> -m <model_name_or_path>``: Perform
-   a query on a set of source files using a single prompt. This is useful for navigating
-   and understanding the source code.
+#. ``code-scribe inspect <filelist> -p <query_prompt> -m
+   <model_name_or_path>``: Perform a query on a set of source files
+   using a single prompt. This is useful for navigating and
+   understanding the source code.
 
-#. ``code-scribe inspect <filelist> -p <query_prompt> --save-prompts``: Create a scribe.json
-   that you can copy/paste to chat interfaces.
+#. ``code-scribe inspect <filelist> -p <query_prompt> --save-prompts``:
+   Create a scribe.json that you can copy/paste to chat interfaces.
 
 **********
  Citation

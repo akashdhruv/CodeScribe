@@ -178,8 +178,8 @@ Following is a breif overview of different commands:
    created from the seed prompt file and appended with source and draft
    code.
 
-#. ``code-scribe inspect <filelist> -p <query_prompt> -m
-   <model_name_or_path>``: Perform a query on a set of source files
+#. ``code-scribe inspect <filelist> -p <query_prompt> -m <model_name_or_path>``:
+   Perform a query on a set of source files
    using a single prompt. This is useful for navigating and
    understanding the source code.
 

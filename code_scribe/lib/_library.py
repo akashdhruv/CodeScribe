@@ -40,7 +40,7 @@ def create_scribe_yaml(root_directory):
         scribe_data = {"directory": dirpath, "files": {}}
 
         for filename in filenames:
-            if filename.endswith((".f", ".f90")):
+            if filename.endswith((".f", ".f90", ".F90")):
                 filepath = os.path.join(dirpath, filename)
                 fortran_info = extract_fortran_info(filepath)
 
@@ -324,6 +324,6 @@ def create_src_mapping(filelist):
         csource.append(os.path.splitext(sfile)[0] + ".cpp")
         finterface.append(os.path.splitext(sfile)[0] + "_fi.f90")
         cdraft.append(os.path.splitext(sfile)[0] + ".scribe")
-        promptfile.append(os.path.splitext(sfile)[0] + ".toml")
+        promptfile.append(os.path.splitext(sfile)[0] + ".json")
 
     return fsource, csource, finterface, cdraft, promptfile

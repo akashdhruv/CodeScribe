@@ -2,7 +2,7 @@
 
 # Import libraries
 import re
-import os, sys, toml, importlib
+import os, sys, toml, importlib, json
 
 from typing import Optional
 from alive_progress import alive_bar
@@ -166,10 +166,11 @@ def prompt_translate(mapping, prompt, model=None, save_prompts=False):
 
                 if save_prompts:
                     with open(promptfile, "w") as pdest:
-                        for instance in chat_template:
-                            pdest.write("[[chat]]\n")
-                            pdest.write(f'role = "{instance["role"]}"\n')
-                            pdest.write(f'content = """\n{instance["content"]}"""\n\n')
+                        # for instance in chat_template:
+                        #    pdest.write("[[chat]]\n")
+                        #    pdest.write(f'role = "{instance["role"]}"\n')
+                        #    pdest.write(f'content = """\n{instance["content"]}"""\n\n')
+                        json.dump(chat_template, pdest, indent=4)
                     print(f"Generated prompt file for LLM consumption {promptfile}")
 
                 if neural_model:

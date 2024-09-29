@@ -97,10 +97,10 @@ understanding of their functionality
      --help         Show this message and exit.
 
    Commands:
-     draft             Perform a draft conversion from Fortran to C++
-     index             Index files along a project directory tree
-     neural-translate  Perform a generative AI conversion
-     save-prompts      Create and save customized prompts for each file
+     draft      Perform a draft conversion from Fortran to C++ 
+     index      Index Fortran files along a project directory tree 
+     inspect    Perform a generative AI inspection on Fortran files 
+     translate  Perform a generative AI conversion of Fortran files
 
 Following is a breif overview of different commands:
 

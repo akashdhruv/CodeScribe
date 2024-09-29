@@ -109,8 +109,9 @@ def inspect(fortran_files, query_prompt, model, save_prompts):
     \b
 
     \b
-    This command applies generative AI to inspect a Fortran
-    file and answer a query.
+    This command applies generative AI to inspect a list of
+    Fortran files and answer a query. Results may vary based
+    on the the combination of files
     \b
     """
     if (not model) and (not save_prompts):

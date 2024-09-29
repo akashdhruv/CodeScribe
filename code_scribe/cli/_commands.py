@@ -12,7 +12,7 @@ from code_scribe import lib
 
 
 @code_scribe.command(name="index")
-@click.option("--root-dir", "-r", required=True, help="Root directory of the project")
+@click.argument("root-dir", required=True)
 def index(root_dir):
     """
     \b

@@ -37,7 +37,11 @@ def extract_fortran_info(filepath):
 def create_scribe_yaml(root_directory):
     """Traverses the directory and creates scribe.yaml files for Fortran files."""
     for dirpath, _, filenames in os.walk(root_directory):
-        scribe_data = {"root": root_directory, "directory": dirpath, "files": {}}
+        scribe_data = {
+            "root": root_directory,
+            "directory": dirpath.replace(root_directory + os.sep, ""),
+            "files": {},
+        }
 
         for filename in filenames:
             if filename.endswith((".f", ".f90", ".F90")):
@@ -92,7 +96,9 @@ def create_file_indexes():
 
                 # Update combined index with data from the current scribe.yaml
                 for file, info in scribe_data["files"].items():
-                    file_path = os.path.join(dirpath, file)  # Full file path
+                    file_path = os.path.join(
+                        dirpath.replace(root_directory + os.sep, ""), file
+                    )  # Full file path
 
                     # Extract modules, subroutines, and functions
                     modules = info.get("modules", [])
@@ -110,6 +116,50 @@ def create_file_indexes():
                         file_index[func] = file_path
 
     return file_index
+
+
+def filter_file_indexes(sfile, file_index):
+    """
+    Extract modules and subroutines used in the given Fortran source file,
+    and return a subset of the file_index that corresponds to these.
+
+    Args:
+        sfile (str): The Fortran source file to analyze.
+        file_index (dict): The complete item index list to filter from.
+
+    Returns:
+        dict: A subset of the file_index containing only the used modules and subroutines.
+    """
+    used_modules = set()
+    used_subroutines = set()
+
+    # Open and read the source file
+    with open(sfile, "r") as source:
+        for line in source.readlines():
+            stripped_line = line.strip()
+
+            # Check for 'use' statement to capture modules
+            module_match = re.match(r"^\s*use\s+(\w+)", stripped_line, re.IGNORECASE)
+            if module_match:
+                module_name = module_match.group(1).lower()
+                used_modules.add(module_name)
+
+            # Check for 'call' statement to capture subroutines
+            subroutine_match = re.match(
+                r"^\s*call\s+(\w+)", stripped_line, re.IGNORECASE
+            )
+            if subroutine_match:
+                subroutine_name = subroutine_match.group(1).lower()
+                used_subroutines.add(subroutine_name)
+
+    # Filter the file_index to return only the modules and subroutines used in this file
+    filtered_file_index = {
+        name: path
+        for name, path in file_index.items()
+        if name.lower() in used_modules or name.lower() in used_subroutines
+    }
+
+    return filtered_file_index
 
 
 def query_construct(name, file_index):

@@ -7,6 +7,8 @@ import os, sys, toml, importlib, json
 from typing import Optional
 from alive_progress import alive_bar
 
+from code_scribe import lib
+
 
 class LlamaModel:
     def __init__(self, model):
@@ -199,7 +201,9 @@ def prompt_translate(mapping, seed_prompt, model=None, save_prompts=False):
                 continue
 
 
-def prompt_inspect(filelist, query_prompt, file_index, model=None, save_prompts=False):
+def prompt_inspect(
+    filelist, query_prompt, file_index={}, model=None, save_prompts=False
+):
     """
     Perform inspect on a list of files using a query prompt
     """
@@ -238,10 +242,12 @@ def prompt_inspect(filelist, query_prompt, file_index, model=None, save_prompts=
         + "using elements <query> ... </query>.\n\n"
     )
 
-    chat_template[-1]["content"] += "<index>\n"
-    chat_template[-1]["content"] += "</index>\n\n"
-
+    filtered_file_index = {}
     for fsource in filelist:
+
+        if file_index:
+            filtered_file_index.update(lib.filter_file_indexes(fsource, file_index))
+
         with open(fsource, "r") as sfile:
             source_code = []
 
@@ -252,6 +258,12 @@ def prompt_inspect(filelist, query_prompt, file_index, model=None, save_prompts=
             chat_template[-1]["content"] += (
                 "\n" + f"<{fsource}>\n" + "".join(source_code) + f"</{fsource}>\n"
             )
+
+    if filtered_file_index:
+        chat_template[-1]["content"] += "<index>\n"
+        for construct, file_path in filtered_file_index.items():
+            chat_template[-1]["content"] += f"{construct}: {file_path}\n"
+        chat_template[-1]["content"] += "</index>\n\n"
 
     chat_template[-1]["content"] += "\n" + f"<query>\n" + query_prompt + f"\n</query>\n"
 

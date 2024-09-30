@@ -238,7 +238,7 @@ def prompt_inspect(
         + "in each file. Note that you will find subroutines and functions\n"
         + "repeat along nodes in the directory tree. This maybe due to a directory-based\n"
         + "inheritance design implemented by the project. If the index element is not\n"
-        + "present, then you may ignore it. The query prompt will be provided at then end\n"
+        + "present, then you may ignore it. The query prompt will be provided at the end\n"
         + "using elements <query> ... </query>.\n\n"
     )
 

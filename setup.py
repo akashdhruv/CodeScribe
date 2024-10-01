@@ -24,7 +24,7 @@ with open("code_scribe/__meta__.py", mode="r") as source:
 # core dependencies - click, docker, singularity
 DEPENDENCIES = []
 
-with open("requirements.txt", mode="r", encoding="ascii") as core_reqs:
+with open("requirements/core.txt", mode="r", encoding="ascii") as core_reqs:
     DEPENDENCIES = core_reqs.read()
 
 

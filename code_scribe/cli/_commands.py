@@ -86,7 +86,7 @@ def translate(fortran_files, seed_prompt, model, save_prompts):
 
 @code_scribe.command(name="inspect")
 @click.argument("fortran-files", nargs=-1, required=True)
-@click.option("--query-prompt", "-p", required=True, help="Query prompt")
+@click.option("--query-prompt", "-q", required=True, help="Query prompt")
 @click.option(
     "--model",
     "-m",

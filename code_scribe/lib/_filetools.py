@@ -96,9 +96,7 @@ def create_file_indexes():
 
                 # Update combined index with data from the current scribe.yaml
                 for file, info in scribe_data["files"].items():
-                    file_path = os.path.join(
-                        dirpath.replace(root_directory + os.sep, ""), file
-                    )  # Full file path
+                    file_path = os.path.join(dirpath, file)  # Full file path
 
                     # Extract modules, subroutines, and functions
                     modules = info.get("modules", [])

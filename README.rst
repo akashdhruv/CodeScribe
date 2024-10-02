@@ -165,7 +165,7 @@ Following is a breif overview of different commands:
 
       [[chat]]
       role = "assistant"
-      content = "‹Desired contents of the converted file. Syntactically correct code>"
+      content = "<Desired contents of the converted file. Syntactically correct code>"
 
       [[chat]]
       role = "user"

@@ -104,7 +104,7 @@ understanding of their functionality
 
 Following is a breif overview of different commands:
 
-#. ``code-scribe index -r <project_root_dir>`` - Parses the project
+#. ``code-scribe index <project_root_dir>`` - Parses the project
    directory tree and creates a ``scribe.yaml`` file at each node along
    the directory tree. These YAML files contain metadata about
    functions, modules, and subroutines in the source files. This

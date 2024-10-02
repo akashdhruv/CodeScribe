@@ -116,7 +116,7 @@ Following is a breif overview of different commands:
       # Example contents of scribe.yaml
       directory: src
       files:
-        module1.f90
+        module1.f90:
           modules:
             - module1
           subroutines:
@@ -125,7 +125,7 @@ Following is a breif overview of different commands:
           functions:
             - function1
 
-        module2.f90
+        module2.f90:
           modules: []
           subroutines:
             - subroutineA

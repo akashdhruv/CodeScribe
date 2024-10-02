@@ -192,16 +192,15 @@ Following is a breif overview of different commands:
 
 .. code::
 
-    @software{akash_dhruv_2024_13845914,
-      author       = {Akash Dhruv},
-      title        = {{akashdhruv/code-scribe: Initial development
-                   release}},
-      month        = sep,
-      year         = 2024,
-      publisher    = {Zenodo},
-      version      = {0.dev},
-      doi          = {10.5281/zenodo.13845914},
-      url          = {https://doi.org/10.5281/zenodo.13845914}
+   @software{akash_dhruv_2024_13879406,
+   author       = {Akash Dhruv},
+   title        = {akashdhruv/CodeScribe: 2024.09},
+   month        = oct,
+   year         = 2024,
+   publisher    = {Zenodo},
+   version      = {2024.09},
+   doi          = {10.5281/zenodo.13879406},
+   url          = {https://github.com/akashdhruv/CodeScribe}
    }
 
 .. |Code style: black| image:: https://img.shields.io/badge/code%20style-black-000000.svg

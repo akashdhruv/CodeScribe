@@ -19,6 +19,8 @@ also allows users to interface with large language models (LLMs) through
 the Transformers API and create custom prompts tailored to the specific
 needs of the source code.
 
+Read the paper: https://arxiv.org/abs/2410.24119
+
 **************
  Key Features
 **************
